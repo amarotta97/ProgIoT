@@ -30,4 +30,4 @@ finally:
                 cursor.execute("SELECT * FROM statistic;")
                 csv_writer = csv.writer(csv_file)
                 csv_writer.writerows(cursor)
-		db.close()
+	 	db.close()
