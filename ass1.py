@@ -26,4 +26,8 @@ except Exception as e:
 	db.rollback()
 	raise e
 finally:
-	db.close()
+        with open("/home/pi/ass1/temp_record.csv", "w", newline='') as csv_file:
+                cursor.execute("SELECT * FROM statistic;")
+                csv_writer = csv.writer(csv_file)
+                csv_writer.writerows(cursor)
+		db.close()
