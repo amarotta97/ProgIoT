@@ -39,12 +39,9 @@ def displayData():
 
 def pushMessage(title, body):
     temp = getSenseHatData()
-    data = {
-            'type':'note',
-            'title':title,
-            'body':body
-           }
-    resp = requests.post('https//api.pushbullet.com/v2/pushes', data=json.dumps(data),
+    data = {"type": "note", "title": title, "body": body}
+
+    resp = requests.post('https://api.pushbullet.com/v2/pushes', data=json.dumps(data),
                          headers={'Authorization': 'Bearer ' + ACCESS_TOKEN,
                          'Content-Type': 'application/json'})
     if resp.status_code != 200:
@@ -54,11 +51,15 @@ def pushMessage(title, body):
 
 # main function
 def main():
-    temp = getSenseHatData()
     for i in range (0,1):
         getSenseHatData()
     displayData()
-    pushMessage(temp, "Bring a sweater")
+
+def pushToPhone():
+        temp = getSenseHatData()
+        if ( 20 > temp ):
+                pushMessage(str(temp), "Bring a sweater")
 
 # Execute program
 main()
+pushToPhone()
