@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+   <head>
+      <title>s3602839 </title>
+      <link rel="stylesheet" href='../templates/style.css'/>
+   </head>
+   <body>
+        <table border = 1>
+         <thead>
+            <td>ID: </td>
+            <td>Time: </td>
+            <td>Temperature: </td>
+            <td>Humidity: </td>
+         </thead>
+
+         {% for row in rows %}
+            <tr>
+               <td>{{row["id"]}}</td>
+               <td>{{row["timestamp"]}}</td>
+               <td> {{ row["temperature"]}}</td>
+               <td>{{row["humidity"]}}</td>
+            </tr>
+         {% endfor %}
+      </table>
+   </body>
+</html>
