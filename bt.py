@@ -1,9 +1,11 @@
-import bluetooth, time
+import bluetooth
+import time
+import os
 from sense_hat import SenseHat
 
 sense = SenseHat()
-red = 255
 addr = None
+temp = round(sense.get_temperature(), 1)
 
 if addr == None:
     try:
@@ -17,6 +19,7 @@ if addr == None:
 
     if len(nearby_devices) > 0:
         print("Found %d devices!" % len(nearby_devices))
+        sense.clear(0,255,0)
     else:
         print("I was unable to locate any bluetooth devices")
         sense.clear(255,0,0)
@@ -28,23 +31,17 @@ if addr == None:
         i =+ 1
 
     device_num = input("Option for bluetooth device ")
-
-    # extract out the useful info on the desired device for use later
     addr, name = nearby_devices[device_num][0], nearby_devices[device_num][1]
 
 print("The script will now scan for the device %s." % (addr))
 
 while True:
-    # Try to gather information from the desired device.
-    # We're using two different metrics (readable name and data services)
-    # to reduce false negatives.
     state = bluetooth.lookup_name(addr, timeout=20)
     services = bluetooth.find_service(address=addr)
-    # Flip the LED pin on or off depending on whether the device is nearby
+
     if state == None and services == []:
         print("No device detected in range...")
     else:
-        print("Device detected!")
-    # Arbitrary wait time
-    time.sleep(10)
-        sock = bluetooth.BluetoothSocket(bluetooth.RFCOMM, bluez.btsocket())
+        sense.show_message("Hi {}!, Current temp is {}*c".format(name, temp), scroll_speed=0.05)
+
+
