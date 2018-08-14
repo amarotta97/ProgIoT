@@ -4,44 +4,53 @@ import os
 from sense_hat import SenseHat
 
 sense = SenseHat()
-addr = None
-temp = round(sense.get_temperature(), 1)
 
-if addr == None:
-    try:
-        input("When you are ready to begin, press the Enter key to begin searching...")
-    except SyntaxError:
-        pass
+def getSenseHatData():
+    temp = round(sense.get_temperature(), 1)
 
-    print("Searching for devices...")
+    return temp
 
-    nearby_devices = bluetooth.discover_devices(duration=5, lookup_names=True)
+def main():
+    temp = getSenseHatData()
+    addr = None
 
-    if len(nearby_devices) > 0:
-        print("Found %d devices!" % len(nearby_devices))
-        sense.clear(0,255,0)
-    else:
-        print("I was unable to locate any bluetooth devices")
-        sense.clear(255,0,0)
-        exit(0)
+    if addr == None:
+        try:
+                input("Press the ENTER key to begin BlueTooth search")
+        except SyntaxError:
+                pass
 
-    i = 0
-    for addr, name in nearby_devices:
-        print("%s. %s - %s" % (i, addr, name))
-        i =+ 1
+        print("Searching...\n")
 
-    device_num = input("Option for bluetooth device ")
-    addr, name = nearby_devices[device_num][0], nearby_devices[device_num][1]
+        nearby_devices = bluetooth.discover_devices(duration=5, lookup_names=True)
 
-print("The script will now scan for the device %s." % (addr))
+        if len(nearby_devices) > 0:
+                print("Found %d devices!" % len(nearby_devices))
+                sense.clear(0,255,0)
+        else:
+                print("No device was found, aborting!")
+                sense.clear(255,0,0)
+                exit(0)
 
-while True:
-    state = bluetooth.lookup_name(addr, timeout=20)
-    services = bluetooth.find_service(address=addr)
+        i = 0
+        for addr, name in nearby_devices:
+                print("%s. %s - %s\n" % (i, addr, name))
+                i =+ 1
 
-    if state == None and services == []:
-        print("No device detected in range...")
-    else:
-        sense.show_message("Hi {}!, Current temp is {}*c".format(name, temp), scroll_speed=0.05)
+        device_num = input("Select your option for bluetooth device and press ENTER\n")
+        addr, name = nearby_devices[device_num][0], nearby_devices[device_num][1]
+
+        print("Pairing... %s.\n" % (addr))
+
+    while True:
+        state = bluetooth.lookup_name(addr, timeout=20)
+        services = bluetooth.find_service(address=addr)
+
+        if state == None and services == []:
+                print("Could not pick up device")
+        else:
+                sense.show_message("Hi {}!, Current temp is {}*c".format(name, temp), scroll_speed=0.05)
 
 
+#Execute main
+main()
