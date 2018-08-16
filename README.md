@@ -8,7 +8,7 @@ s3602839 Assignment 1 for Programming Internet of Things
 - ass1.db: Was created using sqlite3 commands, storing output from ass1.py
 
 - ass1.py: Contains section i & ii. 
-    - currently successful section i) Apart from webserver (not complete, coding in seperate file [webserver.py) Currently logs data to 		my sqlite3 database, also prints the current data in the database
+    - currently successful section i) Apart from webserver (not complete, coding in seperate file [/server/webserver.py]) Currently logs data to 		my sqlite3 database, also prints the current data in the database
     - currently successful section ii) Pushbullet API works 100%, sends Notification to my mobile with temp as title, and "Bring 
 		a sweater" as body when temp recorded is less than 20 Celsius
     
