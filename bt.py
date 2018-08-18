@@ -5,16 +5,18 @@ from sense_hat import SenseHat
 
 sense = SenseHat()
 
+# Function to record current temp rounded to 1 decimal
 def getSenseHatData():
     temp = round(sense.get_temperature(), 1)
 
     return temp
 
+# Main function will search for a bluetooth device and display the current temp on the SenseHat
 def main():
     temp = getSenseHatData()
-    addr = None
+    bt_address = None
 
-    if addr == None:
+    if bt_address == None:
         try:
                 input("Press the ENTER key to begin BlueTooth search")
         except SyntaxError:
@@ -22,10 +24,10 @@ def main():
 
         print("Searching...\n")
 
-        nearby_devices = bluetooth.discover_devices(duration=5, lookup_names=True)
+        bt_devices = bluetooth.discover_devices(duration=5, lookup_names=True)
 
-        if len(nearby_devices) > 0:
-                print("Found %d devices!" % len(nearby_devices))
+        if len(bt_devices) > 0:
+                print("Found %d devices!" % len(bt_devices))
                 sense.clear(0,255,0)
         else:
                 print("No device was found, aborting!")
@@ -33,24 +35,24 @@ def main():
                 exit(0)
 
         i = 0
-        for addr, name in nearby_devices:
-                print("%s. %s - %s\n" % (i, addr, name))
+        for bt_address, name in bt_devices:
+                print("%s. %s - %s\n" % (i, bt_address, name))
                 i =+ 1
 
         device_num = input("Select your option for bluetooth device and press ENTER\n")
-        addr, name = nearby_devices[device_num][0], nearby_devices[device_num][1]
+        bt_address, name = bt_devices[device_num][0], bt_devices[device_num][1]
 
-        print("Pairing... %s.\n" % (addr))
+        print("Pairing... %s.\n" % (bt_address))
 
     while True:
-        state = bluetooth.lookup_name(addr, timeout=20)
-        services = bluetooth.find_service(address=addr)
+        bt_state = bluetooth.lookup_name(bt_address, timeout=20)
+        bt_services = bluetooth.find_service(address=bt_address)
 
-        if state == None and services == []:
+        if bt_state == None and bt_services == []:
                 print("Could not pick up device")
         else:
                 sense.show_message("Hi {}!, Current temp is {}*c".format(name, temp), scroll_speed=0.05)
 
 
-#Execute main
+#Execute main program
 main()
