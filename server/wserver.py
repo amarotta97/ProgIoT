@@ -62,7 +62,7 @@ def index():
 
 # Main route to recieve number of posts
 @app.route('/', methods=['POST'])
-def form():
+def input_form():
         global sampleAmount
         sampleAmount = int (request.form['sampleAmount'])
         sampleMaximum = numOfRows()
@@ -84,16 +84,16 @@ def form():
 def plot_temp():
         timestamp, temperature, humidity  = getHistData(sampleAmount)
         ys = temperature
-        fig = Figure()
-        axis = fig.add_subplot(1, 1, 1)
+        fig1 = Figure()
+        axis = fig1.add_subplot(1, 1, 1)
         axis.set_title("Temperature [°C]")
         axis.set_xlabel("Result ")
         axis.grid(True)
         xs = range(sampleAmount)
         axis.plot(xs, ys)
-        canvas = FigureCanvas(fig)
+        image1 = FigureCanvas(fig1)
         output = io.BytesIO()
-        canvas.print_png(output)
+        image1.print_png(output)
         response = make_response(output.getvalue())
         response.mimetype = 'image/png'
         return response
@@ -103,16 +103,16 @@ def plot_temp():
 def plot_hum():
         timestamp, temperature, humidity = getHistData(sampleAmount)
         ys = humidity
-        fig = Figure()
-        axis = fig.add_subplot(1, 1, 1)
+        fig2 = Figure()
+        axis = fig2.add_subplot(1, 1, 1)
         axis.set_title("Humidity [%]")
         axis.set_xlabel("Result ")
         axis.grid(True)
         xs = range(sampleAmount)
         axis.plot(xs, ys)
-        canvas = FigureCanvas(fig)
+        image2 = FigureCanvas(fig2)
         output = io.BytesIO()
-        canvas.print_png(output)
+        image2.print_png(output)
         response = make_response(output.getvalue())
         response.mimetype = 'image/png'
         return response
