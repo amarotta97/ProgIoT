@@ -1,10 +1,26 @@
-<!doctype html>
-<html>
-   <body>
-        <a href = "/list">View entire database content!</a>
-        <br>
-        <a href = "/temp">View Histogram!</a>
+<!DOCTYPE html>
+        <head>
+                <title>s3602839 Home </title>
+                <link rel="stylesheet" href='../static/style.css'/>
+        </head>
+        <body>
+                <h1>Temperature Results from database </h1>
+                <hr>
+                <h2><a href = "/list">View entire database content!</a></h2>
+                <hr>
 
-   </body>
+                <h3>Histogram results:</h3>
+                <p> Please select quantity of results to view. </p>
+                <p>
+                <form method="POST">
+                        <input name="sampleAmount" value= {{numSamples}}>
+                        <input type="submit">
+                </form>
+                </p>
+                <hr>
+                <img src="/plot/temperature" alt="Image Placeholder" width="49%">
+                <img src="/plot/humidity" alt="Image Placeholder" width="49%">
+                <hr>
+                <p> @2018  Adrian Marotta - s3602839</p>
+        </body>
 </html>
-
