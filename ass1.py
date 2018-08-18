@@ -10,7 +10,7 @@ import os
 dbname='/home/pi/ass1/ass1.db'
 ACCESS_TOKEN="o.VIMZp8G8Fz93y1bT4RovYpE0WrYxtesI"
 
-# get data from SenseHat sensor
+# Retrieves the current time, humidity and temperature using datetime and also sensehat
 def getSenseHatData():
     sense = SenseHat()
     time = datetime.now()
@@ -19,7 +19,8 @@ def getSenseHatData():
 
     logData (time, temp, humid)
     return temp
-# log sensor data on database
+
+# Commit the data into database
 def logData (time, temp,  humid):
     conn=sqlite3.connect(dbname)
     curs=conn.cursor()
@@ -28,7 +29,7 @@ def logData (time, temp,  humid):
     conn.commit()
     conn.close()
 
-# display database data
+# Return current results of the database
 def displayData():
     conn=sqlite3.connect(dbname)
     curs=conn.cursor()
@@ -37,6 +38,7 @@ def displayData():
         print (row)
     conn.close()
 
+# Push notification to phone via PushBullet
 def pushMessage(title, body):
     temp = getSenseHatData()
     data = {"type": "note", "title": title, "body": body}
@@ -49,17 +51,18 @@ def pushMessage(title, body):
     else:
         print('complete sending')
 
-# main function
+# main function to run
 def main():
     for i in range (0,1):
         getSenseHatData()
     displayData()
 
+# function to push to phone only if temp is less than 20
 def pushToPhone():
         temp = getSenseHatData()
         if ( 20 > temp ):
-                pushMessage(str(temp), "Bring a sweater")
+                pushMessage("Temp is: " + str(temp), "Bring a sweater")
 
-# Execute program
+# Executes the main and also push to phone
 main()
 pushToPhone()
